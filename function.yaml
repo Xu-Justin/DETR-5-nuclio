@@ -1,0 +1,54 @@
+metadata:
+  name: detr-5
+  namespace: cvat
+  annotations:
+    name: DETR-5
+    type: detector
+    framework: pytorch
+    spec: |
+      [
+        { "id": 1 , "name": "car" },
+        { "id": 2 , "name": "bus" },
+        { "id": 3 , "name": "truck" },
+        { "id": 4 , "name": "motorcycle" },
+        { "id": 5 , "name": "pedestrian" }
+      ]
+
+spec:
+  description: DETR
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 30s
+  build:
+    image: cvat/detr
+    baseImage: pytorch/pytorch:latest
+    
+    directives:
+      preCopy:
+        - kind: USER
+          value: root
+        - kind: RUN
+          value: apt update && apt install --no-install-recommends -y libglib2.0-0
+        - kind: RUN
+          value: pip3 install packaging scipy
+        - kind: WORKDIR
+          value: /opt/nuclio
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 1
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+        
+  resources:
+    limits:
+      nvidia.com/gpu: 1
+
+  platform:
+    attributes:
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3
+      mountMode: volume
