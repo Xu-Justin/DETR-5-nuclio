@@ -43,10 +43,10 @@ def get_result(custom_model, image):
         confidence = float(logits.softmax(-1)[index])
         
         x, y, w, h = boxes * torch.tensor([width, height, width, height], dtype=torch.float32)
-        xmin = float(x - torch.div(w, 2, rounding_mode='trunc'))
-        xmax = float(x + torch.div(w, 2, rounding_mode='trunc'))
-        ymin = float(y - torch.div(h, 2, rounding_mode='trunc'))
-        ymax = float(y + torch.div(h, 2, rounding_mode='trunc'))
+        xmin = float(x - torch.div(w, 2))
+        xmax = float(x + torch.div(w, 2))
+        ymin = float(y - torch.div(h, 2))
+        ymax = float(y + torch.div(h, 2))
         
         encoded_result.append({
             "confidence" : confidence,
