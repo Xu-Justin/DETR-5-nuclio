@@ -27,8 +27,6 @@ spec:
       preCopy:
         - kind: USER
           value: root
-        - kind: ENV
-          valie: DEBIAN_FRONTEND=noninteractive
         - kind: RUN
           value: apt-get update -qq && apt-get install -y git vim libgtk2.0-dev && rm -rf /var/cache/apk/*
         - kind: RUN
