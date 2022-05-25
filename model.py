@@ -13,7 +13,7 @@ CLASSES = [
 ]
 
 def get_model():
-    custom_model = torch.load('DETR.model')
+    custom_model = torch.load('DETR.model', map_location=device)
     return custom_model.to(device)
 
 def get_result(custom_model, image):
@@ -35,7 +35,7 @@ def get_result(custom_model, image):
         boxes = boxes.cpu()
         
         index = int(logits.argmax(-1))
-        if(index >= len(CLASSES)): 
+        if(index<=0 or index >= len(CLASSES)): 
             # encoded_result.append({'none'})
             continue
         
