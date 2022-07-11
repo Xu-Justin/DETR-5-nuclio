@@ -1,0 +1,5 @@
+[core]
+    remote = main
+    autostage = true
+['remote "main"']
+    url = azure://dataset-upload
